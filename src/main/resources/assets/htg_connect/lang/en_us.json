@@ -1,0 +1,37 @@
+{
+  "htg_connect.chat.name": "HowToGo Connect",
+
+  "htg_connect.dimension.overworld": "Overworld",
+  "htg_connect.dimension.nether": "Nether",
+  "htg_connect.dimension.end": "The End",
+
+  "htg_connect.consent.title": "HowToGo Connect",
+  "htg_connect.consent.body": "The server offers a road network",
+  "htg_connect.consent.size": "Size: %s",
+  "htg_connect.consent.total": "Total: %s",
+  "htg_connect.consent.hint": "Accepting replaces your own road network",
+  "htg_connect.consent.note": "Later updates will not ask again",
+  "htg_connect.consent.accept": "Accept",
+  "htg_connect.consent.decline": "Decline",
+
+  "htg_connect.declined.body": "You can use /htg_connect accept to start receiving the road network again",
+  "htg_connect.declined.ok": "OK",
+
+  "htg_connect.message.received": "Received the server road network",
+  "htg_connect.message.received.dimension": "Received the server road network (%s)",
+  "htg_connect.message.failed": "Failed to receive the server road network, see the log",
+  "htg_connect.message.reset": "Cleared the receive record, it will ask again next join",
+  "htg_connect.message.accepted": "Accepted, receiving the server road network",
+  "htg_connect.message.already": "You have already accepted",
+  "htg_connect.message.own": "You cannot accept your own road network",
+  "htg_connect.message.invalid": "That command does nothing here",
+
+  "htg_connect.message.upload.ok": "Uploaded the road network, pushed to %s online player(s)",
+  "htg_connect.message.upload.broadcast": "%s updated the server road network",
+  "htg_connect.message.upload.broadcast.dimension": "%s updated the server road network (%s)",
+  "htg_connect.message.upload.empty": "Upload failed: the road network is empty",
+  "htg_connect.message.upload.unchanged": "Upload failed: identical to the server's current road network, nothing changed",
+  "htg_connect.message.upload.bad": "Upload failed: the road network data cannot be parsed",
+  "htg_connect.message.upload.write_failed": "Upload failed: the server could not write the file, see the server log",
+  "htg_connect.message.upload.too_big": "The road network file is too large, please upload it to the server yourself\nClient road network file: %s"
+}

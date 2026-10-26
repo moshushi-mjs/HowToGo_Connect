@@ -1,0 +1,56 @@
+// ============================================================================
+//  NeoForge 仓库重定向（Gradle 初始化脚本）
+//
+//  背景
+//      maven.neoforged.net 在中国大陆无法访问（连接超时）。
+//      它的 CDN 镜像 neoforged.forgecdn.net 可以访问，目录结构完全一致：
+//          maven.neoforged.net/releases/    -> neoforged.forgecdn.net/releases/
+//
+//  为什么需要 init 脚本，而不是改 build.gradle
+//      ModDevGradle 会创建自己的内部配置（例如 neoFormRuntimeTool），
+//      这些配置用插件硬编码的 maven.neoforged.net，不读 build.gradle 里的
+//      repositories。init 脚本在项目求值之前就把镜像仓库插进去，而 Gradle
+//      按声明顺序查找仓库 —— 镜像排在前面，插件后加的官方地址就轮不到。
+//
+//  用法
+//      gradle --init-script neoforge-mirror.init.gradle <任务>
+//      IDEA 里加到：Settings → Build Tools → Gradle → 初始化脚本
+//
+//  恢复
+//      官方仓库能访问后不再传 --init-script 即可。本文件留着无害。
+// ============================================================================
+
+allprojects {
+    // 先插入镜像；Gradle 按声明顺序找仓库，因此它会排在插件新增的官方地址之前。
+    repositories {
+        maven {
+            name = 'neoforged-cdn-mirror'
+            url = 'https://neoforged.forgecdn.net/releases/'
+        }
+    }
+
+    // 兜底：插件若仍把官方地址加了进来，就地把域名换掉。
+    afterEvaluate {
+        repositories.each { repo ->
+            try {
+                def u = repo.url.toString()
+                if (u.contains('maven.neoforged.net')) {
+                    repo.setUrl(u.replace('maven.neoforged.net', 'neoforged.forgecdn.net'))
+                    println "[neoforge-mirror] 已重定向 ${repo.name} -> ${repo.url}"
+                }
+            } catch (Exception ignored) {
+                // 不是带 url 的仓库类型，跳过
+            }
+        }
+        buildscript.repositories.each { repo ->
+            try {
+                def u = repo.url.toString()
+                if (u.contains('maven.neoforged.net')) {
+                    repo.setUrl(u.replace('maven.neoforged.net', 'neoforged.forgecdn.net'))
+                    println "[neoforge-mirror] 已重定向 (buildscript) ${repo.name} -> ${repo.url}"
+                }
+            } catch (Exception ignored) {
+            }
+        }
+    }
+}

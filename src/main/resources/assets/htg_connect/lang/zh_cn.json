@@ -1,0 +1,37 @@
+{
+  "htg_connect.chat.name": "问道互联",
+
+  "htg_connect.dimension.overworld": "主世界",
+  "htg_connect.dimension.nether": "下界",
+  "htg_connect.dimension.end": "末地",
+
+  "htg_connect.consent.title": "问道互联",
+  "htg_connect.consent.body": "服务器提供了一套路网",
+  "htg_connect.consent.size": "大小：%s",
+  "htg_connect.consent.total": "总计：%s",
+  "htg_connect.consent.hint": "接收后会替换掉你原有的路网",
+  "htg_connect.consent.note": "且以后更新路网将不再询问",
+  "htg_connect.consent.accept": "接收",
+  "htg_connect.consent.decline": "拒绝",
+
+  "htg_connect.declined.body": "你可以使用 /htg_connect accept 以重新开始接收路网",
+  "htg_connect.declined.ok": "确定",
+
+  "htg_connect.message.received": "已接收服务器路网数据",
+  "htg_connect.message.received.dimension": "已接收服务器路网数据（%s）",
+  "htg_connect.message.failed": "接收服务器路网失败，看日志",
+  "htg_connect.message.reset": "已清除接收记录，下次进服会重新询问",
+  "htg_connect.message.accepted": "已同意，开始接收服务器路网",
+  "htg_connect.message.already": "你已经同意过了",
+  "htg_connect.message.own": "你不能接收你自己的路网",
+  "htg_connect.message.invalid": "该命令无效",
+
+  "htg_connect.message.upload.ok": "已成功上传路网，已推送给 %s 个在线玩家",
+  "htg_connect.message.upload.broadcast": "%s 更新了服务器路网",
+  "htg_connect.message.upload.broadcast.dimension": "%s 更新了服务器路网（%s）",
+  "htg_connect.message.upload.empty": "上传失败：路网是空的",
+  "htg_connect.message.upload.unchanged": "上传失败：和服务器当前的路网一样，没有改动",
+  "htg_connect.message.upload.bad": "上传失败：路网数据无法解析",
+  "htg_connect.message.upload.write_failed": "上传失败：服务端写入文件出错，看服务端日志",
+  "htg_connect.message.upload.too_big": "路网文件过大，请自行将文件上传至服务端\n客户端路网文件路径：%s"
+}
