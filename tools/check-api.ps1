@@ -135,6 +135,6 @@ if ($failed.Count -eq 0) {
     }
     Write-Host ""
     Write-Host "  改法：在 src\main\java 里搜索对应的类名/方法名，逐个改。" -ForegroundColor Yellow
-    Write-Host "  清单见 Plan.md 的「用到的问道内部类」一节。" -ForegroundColor Yellow
+    Write-Host "  上面列的就是全部依赖，逐个对着 howtogo 的新签名改。" -ForegroundColor Yellow
     exit 1
 }
