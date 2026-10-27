@@ -19,7 +19,7 @@
 
   "htg_connect.message.received": "Received the server road network",
   "htg_connect.message.received.dimension": "Received the server road network (%s)",
-  "htg_connect.message.failed": "Failed to receive the server road network, see the log",
+  "htg_connect.message.failed": "Failed to receive the server road network",
   "htg_connect.message.reset": "Cleared the receive record, it will ask again next join",
   "htg_connect.message.accepted": "Accepted, receiving the server road network",
   "htg_connect.message.already": "You have already accepted",
@@ -32,6 +32,6 @@
   "htg_connect.message.upload.empty": "Upload failed: the road network is empty",
   "htg_connect.message.upload.unchanged": "Upload failed: identical to the server's current road network, nothing changed",
   "htg_connect.message.upload.bad": "Upload failed: the road network data cannot be parsed",
-  "htg_connect.message.upload.write_failed": "Upload failed: the server could not write the file, see the server log",
+  "htg_connect.message.upload.write_failed": "Upload failed: the server could not write the file",
   "htg_connect.message.upload.too_big": "The road network file is too large, please upload it to the server yourself\nClient road network file: %s"
 }

@@ -56,7 +56,7 @@ public final class ClientPayloads {
                 return;
             }
             if (!RoadImporter.importJson(payload.json())) {
-                Messages.send("htg_connect.message.failed");
+                Messages.sendError("htg_connect.message.failed");
                 return;
             }
             ClientRoads.setVersion(payload.dimension(), payload.version());

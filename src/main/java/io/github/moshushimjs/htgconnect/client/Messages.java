@@ -19,4 +19,11 @@ public final class Messages {
             minecraft.player.displayClientMessage(of(key, args), false);
         }
     }
+
+    public static void sendError(String key, Object... args) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player != null) {
+            minecraft.player.displayClientMessage(Prefix.error(key, args), false);
+        }
+    }
 }

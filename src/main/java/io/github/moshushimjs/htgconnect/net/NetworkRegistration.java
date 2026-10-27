@@ -57,7 +57,7 @@ public final class NetworkRegistration {
             if (!player.server.isDedicatedServer() || !player.hasPermissions(4)) {
                 HowToGoConnect.LOGGER.warn("{} 尝试上传路网，但没有权限或在集成服务端",
                         player.getName().getString());
-                player.sendSystemMessage(Prefix.of("htg_connect.message.invalid"));
+                player.sendSystemMessage(Prefix.error("htg_connect.message.invalid"));
                 return;
             }
 
@@ -80,13 +80,13 @@ public final class NetworkRegistration {
                             Prefix.of("htg_connect.message.upload.ok", count));
                 }
                 case EMPTY -> player.sendSystemMessage(
-                        Prefix.of("htg_connect.message.upload.empty"));
+                        Prefix.error("htg_connect.message.upload.empty"));
                 case UNCHANGED -> player.sendSystemMessage(
-                        Prefix.of("htg_connect.message.upload.unchanged"));
+                        Prefix.error("htg_connect.message.upload.unchanged"));
                 case BAD_FORMAT -> player.sendSystemMessage(
-                        Prefix.of("htg_connect.message.upload.bad"));
+                        Prefix.error("htg_connect.message.upload.bad"));
                 case WRITE_FAILED -> player.sendSystemMessage(
-                        Prefix.of("htg_connect.message.upload.write_failed"));
+                        Prefix.error("htg_connect.message.upload.write_failed"));
             }
         });
     }

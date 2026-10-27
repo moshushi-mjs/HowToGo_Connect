@@ -19,7 +19,7 @@
 
   "htg_connect.message.received": "已接收服务器路网数据",
   "htg_connect.message.received.dimension": "已接收服务器路网数据（%s）",
-  "htg_connect.message.failed": "接收服务器路网失败，看日志",
+  "htg_connect.message.failed": "接收服务器路网失败",
   "htg_connect.message.reset": "已清除接收记录，下次进服会重新询问",
   "htg_connect.message.accepted": "已同意，开始接收服务器路网",
   "htg_connect.message.already": "你已经同意过了",
@@ -32,6 +32,6 @@
   "htg_connect.message.upload.empty": "上传失败：路网是空的",
   "htg_connect.message.upload.unchanged": "上传失败：和服务器当前的路网一样，没有改动",
   "htg_connect.message.upload.bad": "上传失败：路网数据无法解析",
-  "htg_connect.message.upload.write_failed": "上传失败：服务端写入文件出错，看服务端日志",
+  "htg_connect.message.upload.write_failed": "上传失败：服务端写入文件出错",
   "htg_connect.message.upload.too_big": "路网文件过大，请自行将文件上传至服务端\n客户端路网文件路径：%s"
 }
