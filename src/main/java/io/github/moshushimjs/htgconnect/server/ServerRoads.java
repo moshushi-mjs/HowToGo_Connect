@@ -151,13 +151,18 @@ public final class ServerRoads {
 
         dropSameStem(dimension);
 
-        int version = old == null ? 1 : old.version() + 1;
+        int version = contentVersion(text);
         int bytes = text.getBytes(StandardCharsets.UTF_8).length;
         BY_DIMENSION.put(dimension, new Snapshot(dimension, text, version, counts.nodes, counts.segments, bytes));
 
-        HowToGoConnect.LOGGER.info("路网来源【{}】{} 第 {} 版：{} 个点，{} 条线（{} 字节）",
-                source, dimension, version, counts.nodes, counts.segments, bytes);
+        HowToGoConnect.LOGGER.info("路网来源【{}】{}：{} 个点，{} 条线（{} 字节）",
+                source, dimension, counts.nodes, counts.segments, bytes);
         return true;
+    }
+
+    private static int contentVersion(String text) {
+        int hash = text.hashCode() & 0x7fffffff;
+        return hash == 0 ? 1 : hash;
     }
 
     private static void dropSameStem(String dimension) {
@@ -257,13 +262,13 @@ public final class ServerRoads {
             saveIndex(dir);
         }
 
-        int version = old == null ? 1 : old.version() + 1;
+        int version = contentVersion(text);
         int bytes = text.getBytes(StandardCharsets.UTF_8).length;
         BY_DIMENSION.put(dimension, new Snapshot(dimension, text, version, counts.nodes, counts.segments, bytes));
         STAMP.remove(dimension);
 
-        HowToGoConnect.LOGGER.info("路网来源【上传】{} 第 {} 版：{} 个点，{} 条线（{} 字节）→ {}",
-                dimension, version, counts.nodes, counts.segments, bytes, fileName);
+        HowToGoConnect.LOGGER.info("路网来源【上传】{}：{} 个点，{} 条线（{} 字节）→ {}",
+                dimension, counts.nodes, counts.segments, bytes, fileName);
         return UploadResult.OK;
     }
 
