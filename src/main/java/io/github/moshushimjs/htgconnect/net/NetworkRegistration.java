@@ -27,11 +27,28 @@ public final class NetworkRegistration {
         registrar.playToServer(UploadRoadPayload.TYPE, UploadRoadPayload.STREAM_CODEC,
                 NetworkRegistration::handleUpload);
 
+        registrar.playToServer(RequestCatalogPayload.TYPE, RequestCatalogPayload.STREAM_CODEC,
+                NetworkRegistration::handleCatalogRequest);
+
         registrar.playToClient(RoadOfferPayload.TYPE, RoadOfferPayload.STREAM_CODEC,
                 ClientPayloadHooks::onRoadOffer);
 
         registrar.playToClient(RoadNetworkPayload.TYPE, RoadNetworkPayload.STREAM_CODEC,
                 ClientPayloadHooks::onRoadNetwork);
+
+        registrar.playToClient(CatalogPayload.TYPE, CatalogPayload.STREAM_CODEC,
+                ClientPayloadHooks::onCatalog);
+    }
+
+    private static void handleCatalogRequest(RequestCatalogPayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            if (!(context.player() instanceof ServerPlayer player)) {
+                return;
+            }
+            HowToGoConnect.LOGGER.info("{} 查看了路网清单（{} 个维度）",
+                    player.getName().getString(), ServerRoads.catalog().size());
+            PacketDistributor.sendToPlayer(player, new CatalogPayload(ServerRoads.catalog()));
+        });
     }
 
     private static void handleDecline(DeclineRoadPayload payload, IPayloadContext context) {

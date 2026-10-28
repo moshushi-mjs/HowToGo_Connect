@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.github.moshushimjs.htgconnect.HowToGoConnect;
 import io.github.moshushimjs.htgconnect.net.ClientPayloadHooks;
+import io.github.moshushimjs.htgconnect.net.CatalogPayload;
 import io.github.moshushimjs.htgconnect.net.Dimensions;
 import io.github.moshushimjs.htgconnect.net.RequestRoadPayload;
 import io.github.moshushimjs.htgconnect.net.RoadNetworkPayload;
@@ -20,11 +21,18 @@ public final class ClientPayloads {
     public static void install() {
         ClientPayloadHooks.installRoadOffer(ClientPayloads::onRoadOffer);
         ClientPayloadHooks.installRoadNetwork(ClientPayloads::onRoadNetwork);
+        ClientPayloadHooks.installCatalog(ClientPayloads::onCatalog);
         ClientPayloadHooks.installLocalRoads(new LocalRoads());
+    }
+
+    private static void onCatalog(CatalogPayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> ServerCatalog.update(payload.entries(), payload.totalBytes()));
     }
 
     private static void onRoadOffer(RoadOfferPayload payload, IPayloadContext context) {
         context.enqueueWork(() -> {
+            ServerCatalog.update(payload.entries(), payload.totalBytes());
+
             List<RoadOfferPayload.Entry> entries = payload.entries();
             if (entries.isEmpty()) {
                 HowToGoConnect.LOGGER.info("服务端还没有路网，不弹窗");

@@ -14,6 +14,10 @@ public final class ClientPayloadHooks {
         void handle(RoadNetworkPayload payload, IPayloadContext context);
     }
 
+    public interface CatalogHandler {
+        void handle(CatalogPayload payload, IPayloadContext context);
+    }
+
     public interface LocalRoadsProvider {
         List<String> dimensions();
 
@@ -25,6 +29,8 @@ public final class ClientPayloadHooks {
     private static RoadOfferHandler roadOffer = (payload, context) -> {
     };
     private static RoadNetworkHandler roadNetwork = (payload, context) -> {
+    };
+    private static CatalogHandler catalog = (payload, context) -> {
     };
     private static LocalRoadsProvider localRoads = new LocalRoadsProvider() {
         @Override
@@ -54,6 +60,10 @@ public final class ClientPayloadHooks {
         roadNetwork = handler;
     }
 
+    public static void installCatalog(CatalogHandler handler) {
+        catalog = handler;
+    }
+
     public static void installLocalRoads(LocalRoadsProvider provider) {
         localRoads = provider;
     }
@@ -64,6 +74,10 @@ public final class ClientPayloadHooks {
 
     public static void onRoadNetwork(RoadNetworkPayload payload, IPayloadContext context) {
         roadNetwork.handle(payload, context);
+    }
+
+    public static void onCatalog(CatalogPayload payload, IPayloadContext context) {
+        catalog.handle(payload, context);
     }
 
     public static List<String> localRoadDimensions() {

@@ -8,10 +8,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import io.github.moshushimjs.htgconnect.client.ClientPayloads;
+import io.github.moshushimjs.htgconnect.client.KeyBindings;
 import io.github.moshushimjs.htgconnect.client.ClientRoads;
 import io.github.moshushimjs.htgconnect.client.Messages;
 import io.github.moshushimjs.htgconnect.client.RoadImporter;
+import io.github.moshushimjs.htgconnect.client.RoadInfoScreen;
 import io.github.moshushimjs.htgconnect.client.RoadSync;
+import io.github.moshushimjs.htgconnect.client.ServerCatalog;
 import io.github.moshushimjs.htgconnect.net.ClientPayloadHooks;
 import io.github.moshushimjs.htgconnect.net.RequestRoadPayload;
 import io.github.moshushimjs.htgconnect.net.UploadRoadPayload;
@@ -39,11 +42,23 @@ public class HowToGoConnectClient {
     @SubscribeEvent
     static void onClientTick(ClientTickEvent.Post event) {
         RoadSync.tick();
+        while (KeyBindings.OPEN_INFO.consumeClick()) {
+            openInfo();
+        }
+    }
+
+    private static void openInfo() {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player == null || minecraft.screen != null) {
+            return;
+        }
+        minecraft.setScreen(new RoadInfoScreen());
     }
 
     @SubscribeEvent
     static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) {
         RoadSync.reset();
+        ServerCatalog.clear();
     }
 
     @SubscribeEvent
@@ -81,7 +96,14 @@ public class HowToGoConnectClient {
                         }))
                 .then(Commands.literal("upload")
                         .requires(source -> source.hasPermission(4))
-                        .executes(ctx -> upload(ctx.getSource()))));
+                        .executes(ctx -> upload(ctx.getSource())))
+                .then(Commands.literal("info")
+                        .executes(ctx -> info())));
+    }
+
+    private static int info() {
+        Minecraft.getInstance().setScreen(new RoadInfoScreen());
+        return 1;
     }
 
     private static int upload(CommandSourceStack source) {

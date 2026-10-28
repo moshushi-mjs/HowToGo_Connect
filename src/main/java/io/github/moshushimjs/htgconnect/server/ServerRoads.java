@@ -94,6 +94,13 @@ public final class ServerRoads {
             }
             changed |= apply(dimension, text, "文件");
         }
+
+        Set<String> stale = new LinkedHashSet<>(BY_DIMENSION.keySet());
+        stale.removeAll(known);
+        for (String dimension : stale) {
+            changed |= drop(dimension, "索引里没有这个维度");
+        }
+
         return changed;
     }
 

@@ -41,6 +41,7 @@ public class RoadConsentScreen extends Screen {
     private double scroll = 0.0;
     private boolean accepted = false;
     private boolean handled = false;
+    private boolean focusCleared = false;
     private boolean dragging = false;
     private double dragOffset = 0.0;
 
@@ -164,6 +165,8 @@ public class RoadConsentScreen extends Screen {
                         Minecraft.getInstance().setScreen(new RoadDeclinedScreen());
                     }
                 }).bounds(centerX + 5, buttonY, 100, 20).build());
+
+        this.clearFocus();
     }
 
     private void requestCurrent() {
@@ -194,7 +197,11 @@ public class RoadConsentScreen extends Screen {
             this.dragging = true;
             return true;
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        if (super.mouseClicked(mouseX, mouseY, button)) {
+            return true;
+        }
+        this.clearFocus();
+        return false;
     }
 
     @Override
@@ -251,6 +258,10 @@ public class RoadConsentScreen extends Screen {
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        if (!this.focusCleared) {
+            this.focusCleared = true;
+            this.clearFocus();
+        }
         graphics.fill(0, 0, this.width, this.height, 0xB0000000);
 
         int left = panelLeft();

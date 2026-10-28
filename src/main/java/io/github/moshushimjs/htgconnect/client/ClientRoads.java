@@ -87,6 +87,10 @@ public final class ClientRoads {
         return BY_SERVER.computeIfAbsent(serverKey(), key -> new Entry());
     }
 
+    public static boolean isHost() {
+        return Minecraft.getInstance().hasSingleplayerServer();
+    }
+
     public static boolean consented() {
         return "accept".equals(entry().decision);
     }
