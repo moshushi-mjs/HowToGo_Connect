@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,11 +76,24 @@ public final class ClientRoads {
             Files.createDirectories(path.getParent());
             Store store = new Store();
             store.servers = new HashMap<>(BY_SERVER);
-            try (Writer writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
-                GSON.toJson(store, writer);
-            }
+            writeAtomically(path, GSON.toJson(store));
         } catch (IOException e) {
             HowToGoConnect.LOGGER.warn("路网状态保存失败：{}", e.toString());
+        }
+    }
+
+    private static void writeAtomically(Path target, String text) throws IOException {
+        Path parent = target.getParent();
+        if (parent != null) {
+            Files.createDirectories(parent);
+        }
+        Path temp = target.resolveSibling(target.getFileName() + ".tmp");
+        Files.writeString(temp, text, StandardCharsets.UTF_8);
+        try {
+            Files.move(temp, target,
+                    StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+        } catch (AtomicMoveNotSupportedException e) {
+            Files.move(temp, target, StandardCopyOption.REPLACE_EXISTING);
         }
     }
 

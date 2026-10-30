@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -250,7 +252,7 @@ public final class ServerRoads {
                 Files.deleteIfExists(backup);
                 Files.copy(path, backup);
             }
-            Files.writeString(path, text, StandardCharsets.UTF_8);
+            writeAtomically(path, text);
         } catch (IOException e) {
             HowToGoConnect.LOGGER.warn("服务端路网写入失败：{}", e.toString());
             return UploadResult.WRITE_FAILED;
@@ -300,6 +302,21 @@ public final class ServerRoads {
         return false;
     }
 
+    private static void writeAtomically(Path target, String text) throws IOException {
+        Path parent = target.getParent();
+        if (parent != null) {
+            Files.createDirectories(parent);
+        }
+        Path temp = target.resolveSibling(target.getFileName() + ".tmp");
+        Files.writeString(temp, text, StandardCharsets.UTF_8);
+        try {
+            Files.move(temp, target,
+                    StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+        } catch (AtomicMoveNotSupportedException e) {
+            Files.move(temp, target, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
     private static void loadIndex(Path dir) {
         Map<String, String> loaded = new LinkedHashMap<>();
 
@@ -329,9 +346,7 @@ public final class ServerRoads {
             Files.createDirectories(dir);
             IndexFile file = new IndexFile();
             file.dimensions = new LinkedHashMap<>(FILE_OF);
-            try (Writer writer = Files.newBufferedWriter(indexPath, StandardCharsets.UTF_8)) {
-                GSON.toJson(file, writer);
-            }
+            writeAtomically(indexPath, GSON.toJson(file));
         } catch (IOException e) {
             HowToGoConnect.LOGGER.warn("维度索引写入失败：{}", e.toString());
         }
