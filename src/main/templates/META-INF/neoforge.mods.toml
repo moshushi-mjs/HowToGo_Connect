@@ -93,7 +93,7 @@ config="htg_connect.mixins.json"
 [[dependencies.${mod_id}]]
     modId="howtogo"
     type="required"
-    versionRange="[0.2.2,)"
+    versionRange="[0.2.3,)"
     ordering="AFTER"
 
     side="CLIENT"
