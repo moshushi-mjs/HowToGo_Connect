@@ -45,8 +45,7 @@ public final class NetworkRegistration {
             if (!(context.player() instanceof ServerPlayer player)) {
                 return;
             }
-            HowToGoConnect.LOGGER.info("{} 查看了路网清单（{} 个维度）",
-                    player.getName().getString(), ServerRoads.catalog().size());
+
             PacketDistributor.sendToPlayer(player, new CatalogPayload(ServerRoads.catalog()));
         });
     }
@@ -127,7 +126,7 @@ public final class NetworkRegistration {
                 return;
             }
 
-            HowToGoConnect.LOGGER.info("{} 请求路网（{}），发给他", player.getName().getString(), dimension);
+
             PacketDistributor.sendToPlayer(player,
                     new RoadNetworkPayload(dimension, version, text));
         });

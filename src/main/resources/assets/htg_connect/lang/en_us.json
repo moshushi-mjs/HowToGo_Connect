@@ -36,6 +36,12 @@
   "key.categories.htg_connect": "HowToGo Connect",
   "key.htg_connect.info": "HowToGo Connect panel",
 
+  "htg_connect.mapdata.disabled.first": "HowToGo Connect Mod has disabled this",
+  "htg_connect.mapdata.disabled.second": "Road updates are handled by this mod now",
+  "htg_connect.mapdata.disabled.button": "Stop updates",
+
+  "htg_connect.mapdata.disabled.unavailable": "Not available",
+
   "htg_connect.info.title": "HowToGo Connect",
   "htg_connect.info.subtitle": "Server road networks - %s dimension(s)",
   "htg_connect.info.total": "Total %s",

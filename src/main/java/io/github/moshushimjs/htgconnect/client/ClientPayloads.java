@@ -32,14 +32,15 @@ public final class ClientPayloads {
     private static void onRoadOffer(RoadOfferPayload payload, IPayloadContext context) {
         context.enqueueWork(() -> {
             ServerCatalog.update(payload.entries(), payload.totalBytes());
+            ServerCatalog.setKickOnDecline(payload.kickOnDecline());
 
             List<RoadOfferPayload.Entry> entries = payload.entries();
             if (entries.isEmpty()) {
-                HowToGoConnect.LOGGER.info("服务端还没有路网，不弹窗");
+                
                 return;
             }
             if (Minecraft.getInstance().hasSingleplayerServer()) {
-                HowToGoConnect.LOGGER.info("我是房主，跳过弹窗");
+                
                 return;
             }
             if (ClientRoads.consented()) {
@@ -47,7 +48,7 @@ public final class ClientPayloads {
                 return;
             }
             if (ClientRoads.decided()) {
-                HowToGoConnect.LOGGER.info("玩家之前拒绝过这个服务器的路网");
+                
                 return;
             }
             Minecraft.getInstance().setScreen(
@@ -59,8 +60,7 @@ public final class ClientPayloads {
         context.enqueueWork(() -> {
             String current = ClientRoads.currentDimension();
             if (current == null || !Dimensions.same(payload.dimension(), current)) {
-                HowToGoConnect.LOGGER.info("收到 {} 的路网，但我在 {}，跳过",
-                        payload.dimension(), current);
+                
                 return;
             }
             if (!RoadImporter.importJson(payload.json())) {
@@ -89,7 +89,7 @@ public final class ClientPayloads {
                 continue;
             }
             if (entry.version() == known) {
-                HowToGoConnect.LOGGER.info("服务端的 {} 路网已是最新", current);
+                
                 return;
             }
             PacketDistributor.sendToServer(new RequestRoadPayload(entry.dimension(), known));

@@ -10,6 +10,7 @@ public final class ServerCatalog {
     private static List<RoadOfferPayload.Entry> entries = List.of();
     private static long totalBytes = 0L;
     private static boolean received = false;
+    private static boolean kickOnDecline = false;
 
     private ServerCatalog() {
     }
@@ -24,6 +25,7 @@ public final class ServerCatalog {
         entries = List.of();
         totalBytes = 0L;
         received = false;
+        kickOnDecline = false;
     }
 
     public static List<RoadOfferPayload.Entry> entries() {
@@ -36,6 +38,14 @@ public final class ServerCatalog {
 
     public static boolean received() {
         return received;
+    }
+
+    public static void setKickOnDecline(boolean value) {
+        kickOnDecline = value;
+    }
+
+    public static boolean kickOnDecline() {
+        return kickOnDecline;
     }
 
     public static boolean empty() {

@@ -1,0 +1,9 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "io.github.moshushimjs.htgconnect.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "MapDataScreenMixin"
+  ]
+}

@@ -67,7 +67,7 @@ public final class RoadSync {
         }
 
         knownRevision = revision;
-        HowToGoConnect.LOGGER.info("本地路网被改过（revision {}），重新向服务端请求", revision);
+        
         PacketDistributor.sendToServer(new RequestRoadPayload(dimension, -1));
     }
 }

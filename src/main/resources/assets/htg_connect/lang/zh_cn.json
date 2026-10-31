@@ -36,6 +36,12 @@
   "key.categories.htg_connect": "问道互联",
   "key.htg_connect.info": "问道互联面板",
 
+  "htg_connect.mapdata.disabled.first": "HowToGo Connect Mod 已禁用此功能",
+  "htg_connect.mapdata.disabled.second": "路网更新正在由此模组接管",
+  "htg_connect.mapdata.disabled.button": "关闭更新",
+
+  "htg_connect.mapdata.disabled.unavailable": "该功能不可用",
+
   "htg_connect.info.title": "问道互联",
   "htg_connect.info.subtitle": "服务器路网 · %s 个维度",
   "htg_connect.info.total": "总计 %s",
