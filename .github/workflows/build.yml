@@ -21,15 +21,19 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      # 问道（howtogo）的 jar 不在仓库里 —— 那是别人的作品，不该上传。
-      # 但编译需要它，所以这里从作者的 GitHub Release 下载。
-      # 见 libs/README.md。
-      - name: Download howtogo
+      # 问道（howtogo）没有发布过任何版本，也没有发布到 Maven，
+      # 所以先把它的源码拉下来，只编 1.21.1-neoforge 这一个模块。
+      - name: Build howtogo
         run: |
-          mkdir -p libs
-          curl -sSL --fail -o libs/howtogo-0.2.2.jar \
-            "https://github.com/Dong-awa/howtogo/releases/download/v0.2.2/howtogo-0.2.2%2Bmc1.21.1-neoforge.jar"
-          ls -la libs/
+          set -euo pipefail
+          git clone --depth 1 https://github.com/Dong-awa/howtogo.git /tmp/howtogo
+          cd /tmp/howtogo
+          chmod +x ./gradlew
+          ./gradlew :1.21.1-neoforge:build --configure-on-demand --console=plain
+          mkdir -p "$GITHUB_WORKSPACE/libs"
+          cp versions/1.21.1-neoforge/build/libs/howtogo-neoforge-*.jar \
+             "$GITHUB_WORKSPACE/libs/howtogo-0.2.3.jar"
+          ls -la "$GITHUB_WORKSPACE/libs"
 
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
