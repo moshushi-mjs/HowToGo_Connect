@@ -13,7 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import bili.dongsz.howtogo.client.MapDataScreen;
 import bili.dongsz.howtogo.client.UiTheme;
 import io.github.moshushimjs.htgconnect.client.ClientRoads;
+import io.github.moshushimjs.htgconnect.client.RoadInfoScreen;
 import io.github.moshushimjs.htgconnect.client.ServerCatalog;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -33,6 +35,8 @@ public abstract class MapDataScreenMixin {
     private static final int GREY_PERCENT = 80;
     private static final int DARK_BAND = 0x1AFFFFFF;
     private static final int HOVER_RED = 0xFFE02020;
+    private static final int NAV_WIDTH = 66;
+    private static final int NAV_HEIGHT = 16;
 
     @Shadow
     private int panelX;
@@ -58,6 +62,9 @@ public abstract class MapDataScreenMixin {
     @Shadow
     private int listH;
 
+    private boolean htgNavReady;
+    private int htgNavX;
+    private int htgNavY;
     private boolean htgShown;
     private int htgExportX;
     private int htgExportY;
@@ -111,19 +118,28 @@ public abstract class MapDataScreenMixin {
     @Inject(method = "render", at = @At("TAIL"))
     private void htg$render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick,
             CallbackInfo ci) {
-        if (!this.htgShown) {
-            return;
+        if (this.htgShown) {
+            graphics.fill(this.listX, this.listY, this.listX + this.listW, this.listY + this.listH,
+                    htg$bandColour());
+            htg$drawCard(graphics, mouseX, mouseY);
+            htg$drawDisabledExport(graphics);
         }
-        graphics.fill(this.listX, this.listY, this.listX + this.listW, this.listY + this.listH,
-                htg$bandColour());
-        htg$drawCard(graphics, mouseX, mouseY);
-        htg$drawDisabledExport(graphics);
+        htg$drawNavButton(graphics, mouseX, mouseY);
     }
 
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
     private void htg$click(double mouseX, double mouseY, int button,
             CallbackInfoReturnable<Boolean> cir) {
-        if (!this.htgShown || button != 0) {
+        if (button != 0) {
+            return;
+        }
+        if (this.htgNavReady && htg$inside(mouseX, mouseY, this.htgNavX, this.htgNavY, NAV_WIDTH,
+                NAV_HEIGHT)) {
+            Minecraft.getInstance().setScreen(new RoadInfoScreen());
+            cir.setReturnValue(true);
+            return;
+        }
+        if (!this.htgShown) {
             return;
         }
         if (htg$inside(mouseX, mouseY, this.htgExportX, this.htgExportY, this.htgExportW,
@@ -170,6 +186,9 @@ public abstract class MapDataScreenMixin {
 
     private void htg$layout() {
         this.htgShown = false;
+        this.htgNavX = this.panelX + this.panelW - PAD - NAV_WIDTH;
+        this.htgNavY = this.panelY + 3;
+        this.htgNavReady = true;
         try {
             if (!ClientRoads.consented()) {
                 return;
@@ -203,6 +222,21 @@ public abstract class MapDataScreenMixin {
         } catch (Throwable ignored) {
             this.htgShown = false;
         }
+    }
+
+    private void htg$drawNavButton(GuiGraphics graphics, int mouseX, int mouseY) {
+        boolean hovered = htg$inside(mouseX, mouseY, this.htgNavX, this.htgNavY, NAV_WIDTH,
+                NAV_HEIGHT);
+        graphics.fill(this.htgNavX, this.htgNavY, this.htgNavX + NAV_WIDTH,
+                this.htgNavY + NAV_HEIGHT, hovered ? htg$buttonHover() : htg$buttonColour());
+        graphics.fill(this.htgNavX, this.htgNavY, this.htgNavX + NAV_WIDTH, this.htgNavY + 1,
+                htg$edgeColour());
+
+        Font font = ((Screen) (Object) this).getMinecraft().font;
+        Component label = Component.translatable("htg_connect.mapdata.panel");
+        String shown = font.plainSubstrByWidth(label.getString(), NAV_WIDTH - 6);
+        graphics.drawString(font, shown, this.htgNavX + (NAV_WIDTH - font.width(shown)) / 2,
+                this.htgNavY + (NAV_HEIGHT - 8) / 2, htg$textColour(), false);
     }
 
     private void htg$drawCard(GuiGraphics graphics, int mouseX, int mouseY) {

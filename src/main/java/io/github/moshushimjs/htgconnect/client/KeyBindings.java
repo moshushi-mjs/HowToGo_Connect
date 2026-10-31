@@ -18,7 +18,7 @@ public final class KeyBindings {
             "key.htg_connect.info",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
-            InputConstants.KEY_H,
+            InputConstants.UNKNOWN.getValue(),
             CATEGORY);
 
     private KeyBindings() {

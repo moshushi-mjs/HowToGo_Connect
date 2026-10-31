@@ -42,6 +42,8 @@
 
   "htg_connect.mapdata.disabled.unavailable": "该功能不可用",
 
+  "htg_connect.mapdata.panel": "问道互联",
+
   "htg_connect.info.title": "问道互联",
   "htg_connect.info.subtitle": "服务器路网 · %s 个维度",
   "htg_connect.info.total": "总计 %s",

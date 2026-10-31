@@ -42,6 +42,8 @@
 
   "htg_connect.mapdata.disabled.unavailable": "Not available",
 
+  "htg_connect.mapdata.panel": "HowToGo Connect",
+
   "htg_connect.info.title": "HowToGo Connect",
   "htg_connect.info.subtitle": "Server road networks - %s dimension(s)",
   "htg_connect.info.total": "Total %s",
